@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Treino Leo">
+<meta name="theme-color" content="#0f0f14">
+<title>Treino — Leonardo</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0f0f14;--bg2:#181825;--bg3:#1e1e2c;--bg4:#23232f;
+  --blue:#4a8df5;--blue-dim:#1a4fa8;--blue-bg:#1a2e50;
+  --text:#f0f0f8;--text2:#9090a8;--text3:#4a4a60;
+  --green-bg:#1a3d1a;--green:#5dba5d;
+  --amber-bg:#3d2e0a;--amber:#e8a020;
+  --red-bg:#3d1010;--red:#e85050;
+  --border:#23232f;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+}
+html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);overflow:hidden}
+#app{height:100%;display:flex;flex-direction:column;max-width:430px;margin:0 auto;position:relative}
+
+/* topbar */
+.topbar{padding:calc(var(--safe-top) + 14px) 18px 10px;background:var(--bg);flex-shrink:0}
+.top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
+.top-greeting{font-size:12px;color:var(--text3);letter-spacing:.02em}
+.top-badge{background:var(--blue-dim);border-radius:20px;padding:3px 11px;font-size:11px;color:#7ab3f5;font-weight:500}
+.top-title{font-size:22px;font-weight:600;color:var(--text);letter-spacing:-.3px}
+
+/* day strip */
+.day-strip{display:flex;gap:7px;padding:0 18px 12px;overflow-x:auto;flex-shrink:0;scrollbar-width:none}
+.day-strip::-webkit-scrollbar{display:none}
+.day-chip{padding:7px 16px;border-radius:22px;font-size:12px;font-weight:500;border:none;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .15s;font-family:'DM Sans',sans-serif}
+.day-chip.off{background:var(--bg2);color:var(--text3)}
+.day-chip.on{background:var(--blue-dim);color:#fff}
+
+/* scroll area */
+.scroll-area{flex:1;overflow-y:auto;padding:0 12px 8px;scrollbar-width:none}
+.scroll-area::-webkit-scrollbar{display:none}
+
+/* exercise cards */
+.ex-card{background:var(--bg2);border-radius:18px;margin-bottom:10px;overflow:hidden;border:1px solid var(--border)}
+.ex-header{padding:13px 14px;display:flex;align-items:center;gap:11px;cursor:pointer;-webkit-user-select:none;user-select:none}
+.ex-header:active{background:var(--bg3)}
+.ex-thumb{width:50px;height:50px;border-radius:11px;object-fit:cover;background:var(--bg4);flex-shrink:0}
+.ex-thumb-ph{width:50px;height:50px;border-radius:11px;background:var(--bg4);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.ex-col{flex:1;min-width:0}
+.ex-name{font-size:14px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ex-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.ex-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
+.pse-pill{font-size:10px;padding:3px 9px;border-radius:10px;font-weight:600;letter-spacing:.02em}
+.p7{background:var(--green-bg);color:var(--green)}
+.p8{background:var(--amber-bg);color:var(--amber)}
+.p9{background:var(--red-bg);color:var(--red)}
+.done-count{font-size:11px;color:var(--blue);font-weight:600}
+.chevron{transition:transform .2s;flex-shrink:0;margin-left:2px}
+
+.ex-body{border-top:1px solid var(--border)}
+.gif-row{display:flex;gap:12px;padding:13px 14px;background:#13131e}
+.gif-big{width:112px;height:112px;border-radius:13px;object-fit:cover;background:var(--bg4);flex-shrink:0}
+.gif-details{flex:1;min-width:0;display:flex;flex-direction:column;gap:7px}
+.muscles-lbl{font-size:10px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.muscle-tags{display:flex;flex-wrap:wrap;gap:4px}
+.mtag{font-size:10px;padding:3px 9px;border-radius:8px;background:var(--blue-bg);color:#7ab3f5;font-weight:500}
+.tip-text{font-size:11px;color:var(--text2);line-height:1.55}
+
+.sets-area{padding:11px 14px 13px}
+.set-hdr{display:grid;grid-template-columns:26px 1fr 1fr 34px;gap:7px;margin-bottom:7px}
+.sh{font-size:10px;color:var(--text3);text-align:center;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.set-row{display:grid;grid-template-columns:26px 1fr 1fr 34px;gap:7px;align-items:center;margin-bottom:7px}
+.sn{font-size:12px;color:var(--text3);text-align:center}
+.si{background:var(--bg3);border:1px solid var(--bg4);border-radius:9px;padding:7px 4px;font-size:13px;text-align:center;color:var(--text);width:100%;outline:none;font-family:'DM Sans',sans-serif;transition:border-color .15s}
+.si:focus{border-color:var(--blue)}
+.si.dim{opacity:.35}
+.check-btn{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--bg4);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:0 auto;transition:all .15s;flex-shrink:0}
+.check-btn.done{background:var(--blue-dim);border-color:var(--blue)}
+.check-btn:active{transform:scale(.9)}
+.add-btn{width:100%;padding:7px;border:1px dashed var(--bg4);border-radius:9px;background:transparent;color:var(--text3);font-size:12px;cursor:pointer;margin-top:2px;font-family:'DM Sans',sans-serif;transition:all .15s}
+.add-btn:active{border-color:var(--blue);color:var(--blue)}
+
+/* nav bar */
+.nav-bar{display:flex;background:var(--bg);border-top:1px solid var(--border);flex-shrink:0;padding-bottom:var(--safe-bottom)}
+.nb{flex:1;padding:11px 0 10px;background:transparent;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--text3);font-family:'DM Sans',sans-serif;font-weight:500;transition:color .15s}
+.nb.on{color:var(--blue)}
+.nb svg{width:21px;height:21px}
+
+/* content pad */
+.content-pad{padding:14px 12px 0}
+
+/* progress */
+.prog-day{margin-bottom:14px}
+.pd-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:8px}
+.prog-ex{background:var(--bg2);border-radius:14px;padding:11px 13px;margin-bottom:7px;border:1px solid var(--border)}
+.pe-name{font-size:12px;font-weight:500;color:#c0c0d8;margin-bottom:7px}
+.pe-sets{display:flex;flex-wrap:wrap;gap:5px}
+.pe-set{font-size:11px;padding:4px 10px;border-radius:8px;background:var(--bg3);color:var(--text3);border:1px solid var(--border);font-weight:500}
+.pe-set.done{background:var(--blue-bg);color:#7ab3f5;border-color:#1e3d6e}
+
+.sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px}
+.sum-card{background:var(--bg2);border-radius:16px;padding:16px 14px;border:1px solid var(--border)}
+.sc-lbl{font-size:11px;color:var(--text3);margin-bottom:5px;font-weight:500}
+.sc-val{font-size:24px;font-weight:600;color:var(--text);letter-spacing:-.5px}
+.sc-unit{font-size:12px;color:var(--text2);font-weight:400}
+
+.empty{text-align:center;padding:52px 20px;color:var(--text3);font-size:13px;line-height:1.7}
+
+/* timer */
+.timer-center{text-align:center;padding:32px 16px 16px}
+.timer-ring{width:170px;height:170px;margin:0 auto 24px}
+.timer-ring svg{width:100%;height:100%}
+.timer-ring-wrap{position:relative;display:inline-block}
+.timer-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:600;color:var(--text);letter-spacing:-1px;font-variant-numeric:tabular-nums}
+.timer-btns{display:flex;gap:10px;justify-content:center;margin-bottom:22px}
+.tbtn{padding:11px 30px;border-radius:14px;border:1px solid var(--bg4);background:transparent;font-size:14px;color:#c0c0d8;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;transition:all .15s}
+.tbtn.pri{background:var(--blue-dim);border-color:var(--blue);color:#fff}
+.tbtn:active{transform:scale(.97)}
+.presets{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:0 8px}
+.pr{padding:7px 18px;border-radius:20px;border:1px solid var(--bg4);background:transparent;font-size:12px;color:var(--text2);cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;transition:all .15s}
+.pr.sel{background:var(--blue-bg);border-color:var(--blue);color:#7ab3f5}
+.pr:active{transform:scale(.97)}
+
+/* ring progress */
+.ring-bg{fill:none;stroke:#1e1e2c;stroke-width:10}
+.ring-fill{fill:none;stroke:var(--blue);stroke-width:10;stroke-linecap:round;transition:stroke-dasharray .5s linear}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="topbar">
+    <div class="top-row">
+      <div class="top-greeting" id="tg">Semana 1 · Bloco 1</div>
+      <div class="top-badge" id="tb">PSE 7–8</div>
+    </div>
+    <div class="top-title" id="tt">Lower A</div>
+  </div>
+  <div class="day-strip" id="day-strip"></div>
+  <div id="main" style="flex:1;overflow-y:auto;display:flex;flex-direction:column"></div>
+  <div class="nav-bar">
+    <button class="nb on" id="nb-treino" onclick="go('treino')">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5"/></svg>
+      treino
+    </button>
+    <button class="nb" id="nb-prog" onclick="go('prog')">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3,14 7,8 11,11 17,4"/><line x1="3" y1="17" x2="17" y2="17"/></svg>
+      progresso
+    </button>
+    <button class="nb" id="nb-timer" onclick="go('timer')">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="11" r="7"/><polyline points="10,7 10,11 13,13"/><line x1="7" y1="2" x2="13" y2="2"/></svg>
+      timer
+    </button>
+  </div>
+</div>
+
+<script>
+const GIF_BASE='https://static.exercisedb.dev/media/';
+const DB={
+  'Squat (barra)':{id:'YnH9Zy7',m:['quadríceps','glúteos'],tip:'Desça abaixo do paralelo. Joelhos alinhados com os pés. Core braced durante todo o movimento.'},
+  'Leg Press':{id:'w5iCPfF',m:['quadríceps','glúteos'],tip:'Não trave os joelhos no topo. Pés na largura dos ombros na plataforma.'},
+  'Romanian Deadlift':{id:'kfN9IuP',m:['isquiotibiais','glúteos'],tip:'Quadril para trás, coluna neutra. Sinta o alongamento dos ísquios antes de subir.'},
+  'Leg Curl (máquina)':{id:'Uw7Bs9B',m:['isquiotibiais'],tip:'Evite levantar o quadril. Movimento controlado na descida — não solte.'},
+  'Leg Extension':{id:'C38Xmrd',m:['quadríceps'],tip:'Pausa de 1s no topo. Sem impulso — isolamento total do quadríceps.'},
+  'Standing Calf Raise':{id:'u6p3vUe',m:['gastrocnêmio'],tip:'Amplitude total — calcanhar abaixo da plataforma. Pausa no topo.'},
+  'Cable Crunch':{id:'HiCVP8y',m:['abdômen'],tip:'Flexione a coluna torácica, não só o quadril. Não puxe com o pescoço.'},
+  'Barbell Bench Press':{id:'EIeI8Vf',m:['peitoral','tríceps','deltóide anterior'],tip:'Cotovelos a 45–75°. Barra desce ao esterno. Pés plantados no chão.'},
+  'Chest Supported Row':{id:'7vG5o25',m:['grande dorsal','rombóides','bíceps'],tip:'Peito firme no banco. Puxe os cotovelos para trás e para baixo. Pausa de 1s no topo.'},
+  'Incline DB Press':{id:'FVM1AUZ',m:['peitoral superior','deltóide'],tip:'Banco a 30–45°. Controle a descida em 2–3 segundos. Não trave os cotovelos no topo.'},
+  'Lat Pulldown (barra)':{id:'ql2HfJI',m:['grande dorsal','bíceps'],tip:'Puxe até a altura do queixo. Não balance o tronco. Escápulas para baixo no início.'},
+  'Cable Fly':{id:'8WRiSjz',m:['peitoral'],tip:'Leve flexão no cotovelo. Sinta o alongamento na posição aberta. Constrinja no final.'},
+  'Face Pull (cable)':{id:'0LNzqA5',m:['deltóide posterior','trapézio médio'],tip:'Puxe em direção à testa separando as mãos. Cotovelos acima dos ombros.'},
+  'Conventional Deadlift':{id:'kRhIXvJ',m:['lombar','glúteos','isquiotibiais'],tip:'Quadril para baixo antes de puxar. Barra rente às canelas. Empurre o chão, não puxe a barra.'},
+  'Bulgarian Split Squat':{id:'hzXWzsc',m:['quadríceps','glúteos'],tip:'Joelho traseiro quase toca o chão. Peso no pé da frente. Tronco levemente inclinado.'},
+  'Hip Thrust (barra)':{id:'RNZxSaT',m:['glúteos','isquiotibiais'],tip:'Aperte os glúteos no topo — não hiperextenda a lombar. Queixo tucked.'},
+  'Leg Curl (sentado)':{id:'3XKzxIu',m:['isquiotibiais'],tip:'Amplitude total. Não interrompa o movimento antes da extensão completa.'},
+  'Lunges (DB)':{id:'6ruhPbz',m:['quadríceps','glúteos'],tip:'Passo largo. Joelho não ultrapassa a ponta do pé. Tronco ereto.'},
+  'Seated Calf Raise':{id:'K6NXNDY',m:['solear'],tip:'Pausa de 1s no topo e na descida. Foco na amplitude, não no peso.'},
+  'Hanging Leg Raise':{id:'YcN4aWT',m:['abdômen','flexores do quadril'],tip:'Controle o balanço. Suba as pernas com contração abdominal, não com impulso.'},
+  'Barbell OHP':{id:'wNkPNx1',m:['deltóide','tríceps'],tip:'Core ativo — não arqueie a lombar. Empurre a barra para trás ao ultrapassar a cabeça.'},
+  'Pull Up (corporal)':{id:'Wx7YMLD',m:['grande dorsal','bíceps'],tip:'Amplitude total — braços completamente estendidos na descida. Não balançe.'},
+  'Barbell Bent Over Row':{id:'eZyBC3j',m:['grande dorsal','rombóides'],tip:'Tronco a 45°. Puxe em direção ao umbigo. Escápulas retraídas no topo.'},
+  'Lateral Raise (DB)':{id:'NucF7F0',m:['deltóide lateral'],tip:'Cotovelo levemente dobrado. Pare na altura dos ombros. Controle a descida.'},
+  'Cable Curl':{id:'RqHcBPr',m:['bíceps'],tip:'Cotovelos fixos junto ao corpo. Não balance o tronco. Supine no topo.'},
+  'Tricep Pushdown (cable)':{id:'O5EMxu7',m:['tríceps'],tip:'Cotovelos junto ao corpo. Extensão completa no fundo. Não solte rápido.'},
+  'Rear Delt Fly (máquina)':{id:'XUUD0Fs',m:['deltóide posterior'],tip:'Peso leve, amplitude total. Pausa de 1s no ponto de máxima contração.'},
+};
+
+const PROG=[
+  {id:0,lbl:'Lower A',focus:'Quad / posterior',ex:[
+    {n:'Squat (barra)',s:4,r:'6–8',l:'60',p:'8'},
+    {n:'Leg Press',s:3,r:'10–12',l:'—',p:'7–8'},
+    {n:'Romanian Deadlift',s:3,r:'8–10',l:'100',p:'7–8'},
+    {n:'Leg Curl (máquina)',s:3,r:'10–12',l:'60',p:'7–8'},
+    {n:'Leg Extension',s:3,r:'12–15',l:'—',p:'7'},
+    {n:'Standing Calf Raise',s:4,r:'12–15',l:'—',p:'7'},
+    {n:'Cable Crunch',s:3,r:'12–15',l:'—',p:'7'}
+  ]},
+  {id:1,lbl:'Upper A',focus:'Peito / costas',ex:[
+    {n:'Barbell Bench Press',s:4,r:'6–8',l:'60',p:'8'},
+    {n:'Chest Supported Row',s:4,r:'8–10',l:'—',p:'7–8'},
+    {n:'Incline DB Press',s:3,r:'10–12',l:'22',p:'7–8'},
+    {n:'Lat Pulldown (barra)',s:3,r:'10–12',l:'60',p:'7–8'},
+    {n:'Cable Fly',s:3,r:'12–15',l:'—',p:'7'},
+    {n:'Face Pull (cable)',s:3,r:'15',l:'—',p:'7'}
+  ]},
+  {id:2,lbl:'Lower B',focus:'Posterior / quad',ex:[
+    {n:'Conventional Deadlift',s:4,r:'5–6',l:'40',p:'8'},
+    {n:'Bulgarian Split Squat',s:3,r:'8–10',l:'—',p:'7–8'},
+    {n:'Hip Thrust (barra)',s:3,r:'10–12',l:'—',p:'7–8'},
+    {n:'Leg Curl (sentado)',s:3,r:'10–12',l:'—',p:'7'},
+    {n:'Lunges (DB)',s:3,r:'10/lado',l:'—',p:'7'},
+    {n:'Seated Calf Raise',s:4,r:'12–15',l:'—',p:'7'},
+    {n:'Hanging Leg Raise',s:3,r:'10–12',l:'—',p:'7'}
+  ]},
+  {id:3,lbl:'Upper B',focus:'Ombros / braços',ex:[
+    {n:'Barbell OHP',s:4,r:'6–8',l:'30',p:'8'},
+    {n:'Pull Up (corporal)',s:4,r:'max–2',l:'—',p:'7–8'},
+    {n:'Barbell Bent Over Row',s:3,r:'8–10',l:'30',p:'7–8'},
+    {n:'Lateral Raise (DB)',s:4,r:'12–15',l:'12',p:'7'},
+    {n:'Cable Curl',s:3,r:'10–12',l:'—',p:'7–8'},
+    {n:'Tricep Pushdown (cable)',s:3,r:'10–12',l:'40',p:'7–8'},
+    {n:'Rear Delt Fly (máquina)',s:3,r:'15',l:'—',p:'7'}
+  ]}
+];
+
+let cur=0,tab='treino',exp={},sdata={},sdone={};
+let tsec=0,trun=false,tiv=null,tmax=120;
+
+function init(){
+  const d=PROG[cur];
+  if(!sdata[cur])sdata[cur]={};
+  if(!sdone[cur])sdone[cur]={};
+  d.ex.forEach((ex,ei)=>{
+    if(!sdata[cur][ei]){
+      const def=ex.r.includes('–')?ex.r.split('–')[1]:ex.r.replace('/lado','');
+      sdata[cur][ei]=Array.from({length:ex.s},()=>({r:def,l:ex.l==='—'?'':ex.l}));
+    }
+    if(!sdone[cur][ei])sdone[cur][ei]={};
+  });
+}
+
+function pc(p){return p==='9'||p==='8–9'?'p9':p==='8'?'p8':'p7';}
+function fmt(s){const m=Math.floor(s/60);return m+':'+String(s%60).padStart(2,'0');}
+
+function renderStrip(){
+  document.getElementById('day-strip').innerHTML=PROG.map((d,i)=>
+    `<button class="day-chip ${i===cur?'on':'off'}" onclick="selDay(${i})">${d.lbl}</button>`
+  ).join('');
+}
+
+function renderTreino(){
+  init();
+  document.getElementById('tg').textContent='Semana 1 · Bloco 1';
+  document.getElementById('tt').textContent=PROG[cur].lbl;
+  document.getElementById('tb').textContent='PSE 7–8';
+  renderStrip();
+  let h='<div class="scroll-area">';
+  PROG[cur].ex.forEach((ex,ei)=>{
+    const key=cur+'-'+ei,isEx=exp[key];
+    const dc=Object.values(sdone[cur]?.[ei]||{}).filter(Boolean).length;
+    const tot=(sdata[cur]?.[ei]||[]).length;
+    const db=DB[ex.n],gurl=db?GIF_BASE+db.id+'.gif':null;
+    h+=`<div class="ex-card">
+      <div class="ex-header" onclick="tog(${ei})">
+        ${gurl?`<img class="ex-thumb" src="${gurl}" loading="lazy" onerror="this.style.opacity=0">`
+          :`<div class="ex-thumb-ph"><svg width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="#4a4a60" stroke-width="1.5"><rect x="3" y="3" width="14" height="14" rx="2"/><circle cx="10" cy="10" r="3"/></svg></div>`}
+        <div class="ex-col">
+          <div class="ex-name">${ex.n}</div>
+          <div class="ex-sub">${tot}×${ex.r} · ${ex.l!=='—'?ex.l+' kg':'calibrar'}</div>
+        </div>
+        <div class="ex-right">
+          <span class="pse-pill ${pc(ex.p)}">PSE ${ex.p}</span>
+          ${dc>0?`<span class="done-count">${dc}/${tot}</span>`:''}
+        </div>
+        <svg class="chevron" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#4a4a60" stroke-width="1.5" style="transform:rotate(${isEx?180:0}deg)"><polyline points="2,4 7,10 12,4"/></svg>
+      </div>`;
+    if(isEx){
+      h+=`<div class="ex-body"><div class="gif-row">
+        ${gurl?`<img class="gif-big" src="${gurl}">`:`<div style="width:112px;height:112px;border-radius:13px;background:#23232f;flex-shrink:0"></div>`}
+        <div class="gif-details">
+          ${db?`<div class="muscles-lbl">músculos</div>
+          <div class="muscle-tags">${db.m.map(m=>`<span class="mtag">${m}</span>`).join('')}</div>
+          <div class="tip-text" style="margin-top:6px">${db.tip}</div>`:''}
+        </div>
+      </div>
+      <div class="sets-area">
+        <div class="set-hdr"><div class="sh">nº</div><div class="sh">reps</div><div class="sh">kg</div><div></div></div>`;
+      sdata[cur][ei].forEach((st,si)=>{
+        const dn=sdone[cur][ei][si];
+        h+=`<div class="set-row">
+          <div class="sn">${si+1}</div>
+          <input class="si${dn?' dim':''}" type="text" inputmode="numeric" value="${st.r}" onchange="upd(${ei},${si},'r',this.value)" placeholder="reps">
+          <input class="si${dn?' dim':''}" type="text" inputmode="decimal" value="${st.l}" onchange="upd(${ei},${si},'l',this.value)" placeholder="kg">
+          <button class="check-btn${dn?' done':''}" onclick="chk(${ei},${si})">
+            <svg width="13" height="13" viewBox="0 0 12 12" fill="none" stroke="${dn?'#fff':'#4a4a60'}" stroke-width="2.2"><polyline points="1.5,6 4.5,9.5 10.5,2.5"/></svg>
+          </button>
+        </div>`;
+      });
+      h+=`<button class="add-btn" onclick="addS(${ei})">+ série extra</button>`;
+      h+=`</div></div>`;
+    }
+    h+=`</div>`;
+  });
+  h+='</div>';
+  document.getElementById('main').innerHTML=h;
+}
+
+function renderProg(){
+  document.getElementById('tg').textContent='Sessão atual';
+  document.getElementById('tt').textContent='Progresso';
+  document.getElementById('tb').textContent='';
+  renderStrip();
+  let td=0,ts=0,tv=0,body='';
+  PROG.forEach((day,di)=>{
+    const dd=sdata[di],dn=sdone[di];
+    if(!dd)return;
+    let has=false;
+    day.ex.forEach((_,ei)=>{if(Object.values(dn?.[ei]||{}).some(Boolean))has=true;});
+    if(!has)return;
+    body+=`<div class="prog-day"><div class="pd-title">${day.lbl}</div>`;
+    day.ex.forEach((ex,ei)=>{
+      const sets=dd[ei]||[],done=dn?.[ei]||{};
+      const dsets=sets.filter((_,si)=>done[si]);
+      if(!dsets.length)return;
+      td+=dsets.length;ts+=sets.length;
+      dsets.forEach(s=>{tv+=(parseInt(s.r)||0)*(parseFloat(s.l)||0);});
+      body+=`<div class="prog-ex"><div class="pe-name">${ex.n}</div><div class="pe-sets">`;
+      sets.forEach((s,si)=>{const d=done[si];body+=`<span class="pe-set${d?' done':''}">${d?(s.l||'—')+'kg×'+(s.r||'—'):'—'}</span>`;});
+      body+=`</div></div>`;
+    });
+    body+=`</div>`;
+  });
+  const sum=`<div class="sum-grid">
+    <div class="sum-card"><div class="sc-lbl">séries feitas</div><div class="sc-val">${td}<span class="sc-unit"> / ${ts||'—'}</span></div></div>
+    <div class="sum-card"><div class="sc-lbl">volume total</div><div class="sc-val">${Math.round(tv).toLocaleString('pt-BR')}<span class="sc-unit"> kg</span></div></div>
+  </div>`;
+  const content=td===0
+    ?'<div class="empty">Nenhuma série registrada ainda.<br>Complete séries no treino para ver aqui.</div>'
+    :sum+body;
+  document.getElementById('main').innerHTML=`<div class="content-pad">${content}</div>`;
+}
+
+function renderTimer(){
+  document.getElementById('tg').textContent='descanso entre séries';
+  document.getElementById('tt').textContent='Timer';
+  document.getElementById('tb').textContent='';
+  renderStrip();
+  const r=72,cx=85,cy=85,circ=2*Math.PI*r;
+  const pct=tmax>0?Math.min(tsec/tmax,1):0;
+  const da=circ*pct,dg=circ*(1-pct);
+  document.getElementById('main').innerHTML=`
+  <div class="content-pad"><div class="timer-center">
+    <div class="timer-ring">
+      <div class="timer-ring-wrap" style="position:relative;display:inline-block;width:170px;height:170px">
+        <svg viewBox="0 0 170 170" width="170" height="170">
+          <circle class="ring-bg" cx="${cx}" cy="${cy}" r="${r}"/>
+          <circle class="ring-fill" cx="${cx}" cy="${cy}" r="${r}"
+            stroke-dasharray="${da.toFixed(2)} ${dg.toFixed(2)}"
+            transform="rotate(-90 ${cx} ${cy})"/>
+        </svg>
+        <div class="timer-num" id="tdisp">${fmt(tsec)}</div>
+      </div>
+    </div>
+    <div class="timer-btns">
+      <button class="tbtn" onclick="resetT()">Reset</button>
+      <button class="tbtn pri" onclick="togT()">${trun?'Pausar':'Iniciar'}</button>
+    </div>
+    <div class="presets">
+      ${[[60,'1 min'],[90,'1:30'],[120,'2 min'],[180,'3 min'],[240,'4 min']].map(([s,lbl])=>`<button class="pr${tsec===s&&!trun?' sel':''}" onclick="setP(${s})">${lbl}</button>`).join('')}
+    </div>
+  </div></div>`;
+}
+
+function selDay(i){cur=i;init();go(tab);}
+function tog(ei){const k=cur+'-'+ei;exp[k]=!exp[k];renderTreino();}
+function upd(ei,si,f,v){sdata[cur][ei][si][f]=v;}
+function chk(ei,si){sdone[cur][ei][si]=!sdone[cur][ei][si];renderTreino();}
+function addS(ei){const l=sdata[cur][ei].slice(-1)[0];sdata[cur][ei].push({r:l.r,l:l.l});renderTreino();}
+function togT(){
+  if(trun){clearInterval(tiv);trun=false;}
+  else{trun=true;tiv=setInterval(()=>{tsec++;const el=document.getElementById('tdisp');if(el)el.textContent=fmt(tsec);},1000);}
+  renderTimer();
+}
+function resetT(){clearInterval(tiv);trun=false;tsec=0;renderTimer();}
+function setP(s){clearInterval(tiv);trun=false;tsec=s;tmax=s;renderTimer();}
+function go(t){
+  tab=t;
+  ['treino','prog','timer'].forEach(x=>document.getElementById('nb-'+x).classList.toggle('on',x===t));
+  if(t==='treino')renderTreino();
+  else if(t==='prog')renderProg();
+  else renderTimer();
+}
+
+init();renderTreino();
+</script>
+</body>
+</html>
