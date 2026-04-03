@@ -24,7 +24,6 @@
 }
 html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);overflow:hidden}
 #app{height:100%;display:flex;flex-direction:column;max-width:430px;margin:0 auto;position:relative}
-
 .topbar{padding:calc(var(--safe-top) + 14px) 18px 10px;background:var(--bg);flex-shrink:0}
 .top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
 .top-greeting{font-size:12px;color:var(--text3);letter-spacing:.02em}
@@ -134,37 +133,35 @@ html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;colo
     </button>
   </div>
 </div>
-
 <script>
-const GIF_BASE='https://static.exercisedb.dev/media/';
 const DB={
-  'Squat (barra)':{id:'YnH9Zy7',m:['quadríceps','glúteos'],tip:'Desça abaixo do paralelo. Joelhos alinhados com os pés. Core braced durante todo o movimento.'},
-  'Leg Press':{id:'w5iCPfF',m:['quadríceps','glúteos'],tip:'Não trave os joelhos no topo. Pés na largura dos ombros na plataforma.'},
-  'Romanian Deadlift':{id:'kfN9IuP',m:['isquiotibiais','glúteos'],tip:'Quadril para trás, coluna neutra. Sinta o alongamento dos ísquios antes de subir.'},
-  'Leg Curl (máquina)':{id:'Uw7Bs9B',m:['isquiotibiais'],tip:'Evite levantar o quadril. Movimento controlado na descida — não solte.'},
-  'Leg Extension':{id:'C38Xmrd',m:['quadríceps'],tip:'Pausa de 1s no topo. Sem impulso — isolamento total do quadríceps.'},
-  'Standing Calf Raise':{id:'u6p3vUe',m:['gastrocnêmio'],tip:'Amplitude total — calcahar abaixo da plataforma. Pausa no topo.'},
-  'Cable Crunch':{id:'HiCVP8y',m:['abdômen'],tip:'Flexione a coluna torácica, não só o quadril. Não puxe com o pescoço.'},
-  'Barbell Bench Press':{id:'EIeI8Vf',m:['peitoral','tríceps','deltóide anterior'],tip:'Cotovelos a 45–75°. Barra desce ao esterno. Pés plantados no chão.'},
-  'Chest Supported Row':{id:'7vG5o25',m:['grande dorsal','rombóides','bíceps'],tip:'Peito firme no banco. Puxe os cotovelos para trás e para baixo. Pausa de 1s no topo.'},
-  'Incline DB Press':{id:'FVM1AUZ',m:['peitoral superior','deltóide'],tip:'Banco a 30–45°. Controle a descida em 2–3 segundos. Não trave os cotovelos no topo.'},
-  'Lat Pulldown (barra)':{id:'ql2HfJI',m:['grande dorsal','bíceps'],tip:'Puxe até a altura do queixo. Não balance o tronco. Escápulas para baixo no início.'},
-  'Cable Fly':{id:'8WRiSjz',m:['peitoral'],tip:'Leve flexão no cotovelo. Sinta o alongamento na posição aberta. Constrinja no final.'},
-  'Face Pull (cable)':{id:'0LNzqA5',m:['deltóide posterior','trapézio médio'],tip:'Puxe em direção à testa separando as mãos. Cotovelos acima dos ombros.'},
-  'Conventional Deadlift':{id:'kRhIXvJ',m:['lombar','glúteos','isquiotibiais'],tip:'Quadril para baixo antes de puxar. Barra rente às canelas. Empurre o chão, não puxe a barra.'},
-  'Bulgarian Split Squat':{id:'hzXWzsc',m:['quadríceps','glúteos'],tip:'Joelho traseiro quase toca o chão. Peso no pé da frente. Tronco levemente inclinado.'},
-  'Hip Thrust (barra)':{id:'RNZxSaT',m:['glúteos','isquiotibiais'],tip:'Aperte os glúteos no topo — não hiperextenda a lombar. Queixo tucked.'},
-  'Leg Curl (sentado)':{id:'3XKzxIu',m:['isquiotibiais'],tip:'Amplitude total. Não interrompa o movimento antes da extensão completa.'},
-  'Lunges (DB)':{id:'6ruhPbz',m:['quadríceps','glúteos'],tip:'Passo largo. Joelho não ultrapassa a ponta do pé. Tronco ereto.'},
-  'Seated Calf Raise':{id:'K6NXNDY',m:['solear'],tip:'Pausa de 1s no topo e na descida. Foco na amplitude, não no peso.'},
-  'Hanging Leg Raise':{id:'YcN4aWT',m:['abdômen','flexores do quadril'],tip:'Controle o balanço. Suba as pernas com contração abdominal, não com impulso.'},
-  'Barbell OHP':{id:'wNkPNx1',m:['deltóide','tríceps'],tip:'Core ativo — não arqueie a lombar. Empurre a barra para trás ao ultrapassar a cabeça.'},
-  'Pull Up (corporal)':{id:'Wx7YMLD',m:['grande dorsal','bíceps'],tip:'Amplitude total — braços completamente estendidos na descida. Não balançe.'},
-  'Barbell Bent Over Row':{id:'eZyBC3j',m:['grande dorsal','rombóides'],tip:'Tronco a 45°. Puxe em direção ao umbigo. Escápulas retraídas no topo.'},
-  'Lateral Raise (DB)':{id:'NucF7F0',m:['deltóide lateral'],tip:'Cotovelo levemente dobrado. Pare na altura dos ombros. Controle a descida.'},
-  'Cable Curl':{id:'RqHcBPr',m:['bíceps'],tip:'Cotovelos fixos junto ao corpo. Não balance o tronco. Supine no topo.'},
-  'Tricep Pushdown (cable)':{id:'O5EMxu7',m:['tríceps'],tip:'Cotovelos junto ao corpo. Extensão completa no fundo. Não solte rápido.'},
-  'Rear Delt Fly (máquina)':{id:'XUUD0Fs',m:['deltóide posterior'],tip:'Peso leve, amplitude total. Pausa de 1s no ponto de máxima contração.'},
+  'Squat (barra)':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/BARBELL-SQUAT.gif',m:['quadríceps','glúteos'],tip:'Desça abaixo do paralelo. Joelhos alinhados com os pés. Core braced durante todo o movimento.'},
+  'Leg Press':{gif:'https://fitnessprogramer.com/wp-content/uploads/2015/11/Leg-Press.gif',m:['quadríceps','glúteos'],tip:'Não trave os joelhos no topo. Pés na largura dos ombros na plataforma.'},
+  'Romanian Deadlift':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Romanian-Deadlift.gif',m:['isquiotibiais','glúteos'],tip:'Quadril para trás, coluna neutra. Sinta o alongamento dos ísquios antes de subir.'},
+  'Leg Curl (máquina)':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/Leg-Curl.gif',m:['isquiotibiais'],tip:'Evite levantar o quadril. Movimento controlado na descida — não solte.'},
+  'Leg Extension':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/LEG-EXTENSION.gif',m:['quadríceps'],tip:'Pausa de 1s no topo. Sem impulso — isolamento total do quadríceps.'},
+  'Standing Calf Raise':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/Standing-Calf-Raise.gif',m:['gastrocnêmio'],tip:'Amplitude total — calcanhar abaixo da plataforma. Pausa no topo.'},
+  'Cable Crunch':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/Cable-Crunch.gif',m:['abdômen'],tip:'Flexione a coluna torácica, não só o quadril. Não puxe com o pescoço.'},
+  'Barbell Bench Press':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Bench-Press.gif',m:['peitoral','tríceps','deltóide anterior'],tip:'Cotovelos a 45–75°. Barra desce ao esterno. Pés plantados no chão.'},
+  'Chest Supported Row':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Row.gif',m:['grande dorsal','rombóides','bíceps'],tip:'Peito firme no banco. Puxe os cotovelos para trás e para baixo. Pausa de 1s no topo.'},
+  'Incline DB Press':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Barbell-Bench-Press.gif',m:['peitoral superior','deltóide'],tip:'Banco a 30–45°. Controle a descida em 2–3 segundos. Não trave os cotovelos no topo.'},
+  'Lat Pulldown (barra)':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/Lat-Pulldown.gif',m:['grande dorsal','bíceps'],tip:'Puxe até a altura do queixo. Não balance o tronco. Escápulas para baixo no início.'},
+  'Cable Fly':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/High-Cable-Crossover.gif',m:['peitoral'],tip:'Leve flexão no cotovelo. Sinta o alongamento na posição aberta. Constrinja no final.'},
+  'Face Pull (cable)':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/Face-Pull.gif',m:['deltóide posterior','trapézio médio'],tip:'Puxe em direção à testa separando as mãos. Cotovelos acima dos ombros.'},
+  'Conventional Deadlift':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Deadlift.gif',m:['lombar','glúteos','isquiotibiais'],tip:'Quadril para baixo antes de puxar. Barra rente às canelas. Empurre o chão, não puxe a barra.'},
+  'Bulgarian Split Squat':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/05/Barbell-Bulgarian-Split-Squat.gif',m:['quadríceps','glúteos'],tip:'Joelho traseiro quase toca o chão. Peso no pé da frente. Tronco levemente inclinado.'},
+  'Hip Thrust (barra)':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Hip-Thrust.gif',m:['glúteos','isquiotibiais'],tip:'Aperte os glúteos no topo — não hiperextenda a lombar. Queixo tucked.'},
+  'Leg Curl (sentado)':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/Leg-Curl.gif',m:['isquiotibiais'],tip:'Amplitude total. Não interrompa o movimento antes da extensão completa.'},
+  'Lunges (DB)':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/06/Dumbbell-Lunge.gif',m:['quadríceps','glúteos'],tip:'Passo largo. Joelho não ultrapassa a ponta do pé. Tronco ereto.'},
+  'Seated Calf Raise':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/Seated-Calf-Raise.gif',m:['solear'],tip:'Pausa de 1s no topo e na descida. Foco na amplitude, não no peso.'},
+  'Hanging Leg Raise':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/Hanging-Leg-Raise.gif',m:['abdômen','flexores do quadril'],tip:'Controle o balanço. Suba as pernas com contração abdominal, não com impulso.'},
+  'Barbell OHP':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Standing-Shoulder-Press.gif',m:['deltóide','tríceps'],tip:'Core ativo — não arqueie a lombar. Empurre a barra para trás ao ultrapassar a cabeça.'},
+  'Pull Up (corporal)':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/Pull-up.gif',m:['grande dorsal','bíceps'],tip:'Amplitude total — braços completamente estendidos na descida. Não balançe.'},
+  'Barbell Bent Over Row':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Bent-Over-Row.gif',m:['grande dorsal','rombóides'],tip:'Tronco a 45°. Puxe em direção ao umbigo. Escápulas retraídas no topo.'},
+  'Lateral Raise (DB)':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Lateral-Raise.gif',m:['deltóide lateral'],tip:'Cotovelo levemente dobrado. Pare na altura dos ombros. Controle a descida.'},
+  'Cable Curl':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/Cable-Curl.gif',m:['bíceps'],tip:'Cotovelos fixos junto ao corpo. Não balance o tronco. Supine no topo.'},
+  'Tricep Pushdown (cable)':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/Triceps-Pushdown.gif',m:['tríceps'],tip:'Cotovelos junto ao corpo. Extensão completa no fundo. Não solte rápido.'},
+  'Rear Delt Fly (máquina)':{gif:'https://fitnessprogramer.com/wp-content/uploads/2021/02/Rear-Delt-Fly.gif',m:['deltóide posterior'],tip:'Peso leve, amplitude total. Pausa de 1s no ponto de máxima contração.'},
 };
 const PROG=[
   {id:0,lbl:'Lower A',focus:'Quad / posterior',ex:[
@@ -205,7 +202,6 @@ const PROG=[
 ];
 let cur=0,tab='treino',exp={},sdata={},sdone={};
 let tsec=0,trun=false,tiv=null,tmax=120;
-
 function init(){
   const d=PROG[cur];
   if(!sdata[cur])sdata[cur]={};
@@ -218,16 +214,9 @@ function init(){
     if(!sdone[cur][ei])sdone[cur][ei]={};
   });
 }
-
 function pc(p){return p==='9'||p==='8–9'?'p9':p==='8'?'p8':'p7';}
 function fmt(s){const m=Math.floor(s/60);return m+':'+String(s%60).padStart(2,'0');}
-
-function renderStrip(){
-  document.getElementById('day-strip').innerHTML=PROG.map((d,i)=>
-    `<button class="day-chip ${i===cur?'on':'off'}" onclick="selDay(${i})">${d.lbl}</button>`
-  ).join('');
-}
-
+function renderStrip(){document.getElementById('day-strip').innerHTML=PROG.map((d,i)=>`<button class="day-chip ${i===cur?'on':'off'}" onclick="selDay(${i})">${d.lbl}</button>`).join('');}
 function renderTreino(){
   init();
   document.getElementById('tg').textContent='Semana 1 · Bloco 1';
@@ -239,52 +228,21 @@ function renderTreino(){
     const key=cur+'-'+ei,isEx=exp[key];
     const dc=Object.values(sdone[cur]?.[ei]||{}).filter(Boolean).length;
     const tot=(sdata[cur]?.[ei]||[]).length;
-    const db=DB[ex.n],gurl=db?GIF_BASE+db.id+'.gif':null;
-    h+=`<div class="ex-card">
-      <div class="ex-header" onclick="tog(${ei})">
-        ${gurl?`<img class="ex-thumb" src="${gurl}" loading="lazy" onerror="this.style.opacity=0">`
-          :`<div class="ex-thumb-ph"><svg width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="#4a4a60" stroke-width="1.5"><rect x="3" y="3" width="14" height="14" rx="2"/><circle cx="10" cy="10" r="3"/></svg></div>`}
-        <div class="ex-col">
-          <div class="ex-name">${ex.n}</div>
-          <div class="ex-sub">${tot}×${ex.r} · ${ex.l!=='—'?ex.l+' kg':'calibrar'}</div>
-        </div>
-        <div class="ex-right">
-          <span class="pse-pill ${pc(ex.p)}">PSE ${ex.p}</span>
-          ${dc>0?`<span class="done-count">${dc}/${tot}</span>`:''}
-        </div>
-        <svg class="chevron" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#4a4a60" stroke-width="1.5" style="transform:rotate(${isEx?180:0}deg)"><polyline points="2,4 7,10 12,4"/></svg>
-      </div>`;
+    const db=DB[ex.n],gurl=db?db.gif:null;
+    h+=`<div class="ex-card"><div class="ex-header" onclick="tog(${ei})">${gurl?`<img class="ex-thumb" src="${gurl}" loading="lazy" onerror="this.style.opacity=0">`:`<div class="ex-thumb-ph"><svg width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="#4a4a60" stroke-width="1.5"><rect x="3" y="3" width="14" height="14" rx="2"/><circle cx="10" cy="10" r="3"/></svg></div>`}<div class="ex-col"><div class="ex-name">${ex.n}</div><div class="ex-sub">${tot}×${ex.r} · ${ex.l!=='—'?ex.l+' kg':'calibrar'}</div></div><div class="ex-right"><span class="pse-pill ${pc(ex.p)}">PSE ${ex.p}</span>${dc>0?`<span class="done-count">${dc}/${tot}</span>`:''}</div><svg class="chevron" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#4a4a60" stroke-width="1.5" style="transform:rotate(${isEx?180:0}deg)"><polyline points="2,4 7,10 12,4"/></svg></div>`;
     if(isEx){
-      h+=`<div class="ex-body"><div class="gif-row">
-        ${gurl?`<img class="gif-big" src="${gurl}">`:`<div style="width:112px;height:112px;border-radius:13px;background:#23232f;flex-shrink:0"></div>`}
-        <div class="gif-details">
-          ${db?`<div class="muscles-lbl">músculos</div>
-          <div class="muscle-tags">${db.m.map(m=>`<span class="mtag">${m}</span>`).join('')}</div>
-          <div class="tip-text" style="margin-top:6px">${db.tip}</div>`:''}
-        </div>
-      </div>
-      <div class="sets-area">
-        <div class="set-hdr"><div class="sh">nº</div><div class="sh">reps</div><div class="sh">kg</div><div></div></div>`;
+      h+=`<div class="ex-body"><div class="gif-row">${gurl?`<img class="gif-big" src="${gurl}">`:`<div style="width:112px;height:112px;border-radius:13px;background:#23232f;flex-shrink:0"></div>`}<div class="gif-details">${db?`<div class="muscles-lbl">músculos</div><div class="muscle-tags">${db.m.map(m=>`<span class="mtag">${m}</span>`).join('')}</div><div class="tip-text" style="margin-top:6px">${db.tip}</div>`:''}</div></div><div class="sets-area"><div class="set-hdr"><div class="sh">nº</div><div class="sh">reps</div><div class="sh">kg</div><div></div></div>`;
       sdata[cur][ei].forEach((st,si)=>{
         const dn=sdone[cur][ei][si];
-        h+=`<div class="set-row">
-          <div class="sn">${si+1}</div>
-          <input class="si${dn?' dim':''}" type="text" inputmode="numeric" value="${st.r}" onchange="upd(${ei},${si},'r',this.value)" placeholder="reps">
-          <input class="si${dn?' dim':''}" type="text" inputmode="decimal" value="${st.l}" onchange="upd(${ei},${si},'l',this.value)" placeholder="kg">
-          <button class="check-btn${dn?' done':''}" onclick="chk(${ei},${si})">
-            <svg width="13" height="13" viewBox="0 0 12 12" fill="none" stroke="${dn?'#fff':'#4a4a60'}" stroke-width="2.2"><polyline points="1.5,6 4.5,9.5 10.5,2.5"/></svg>
-          </button>
-        </div>`;
+        h+=`<div class="set-row"><div class="sn">${si+1}</div><input class="si${dn?' dim':''}" type="text" inputmode="numeric" value="${st.r}" onchange="upd(${ei},${si},'r',this.value)" placeholder="reps"><input class="si${dn?' dim':''}" type="text" inputmode="decimal" value="${st.l}" onchange="upd(${ei},${si},'l',this.value)" placeholder="kg"><button class="check-btn${dn?' done':''}" onclick="chk(${ei},${si})"><svg width="13" height="13" viewBox="0 0 12 12" fill="none" stroke="${dn?'#fff':'#4a4a60'}" stroke-width="2.2"><polyline points="1.5,6 4.5,9.5 10.5,2.5"/></svg></button></div>`;
       });
-      h+=`<button class="add-btn" onclick="addS(${ei})">+ série extra</button>`;
-      h+=`</div></div>`;
+      h+=`<button class="add-btn" onclick="addS(${ei})">+ série extra</button></div></div>`;
     }
     h+=`</div>`;
   });
   h+='</div>';
   document.getElementById('main').innerHTML=h;
 }
-
 function renderProg(){
   document.getElementById('tg').textContent='Sessão atual';
   document.getElementById('tt').textContent='Progresso';
@@ -310,16 +268,10 @@ function renderProg(){
     });
     body+=`</div>`;
   });
-  const sum=`<div class="sum-grid">
-    <div class="sum-card"><div class="sc-lbl">séries feitas</div><div class="sc-val">${td}<span class="sc-unit"> / ${ts||'—'}</span></div></div>
-    <div class="sum-card"><div class="sc-lbl">volume total</div><div class="sc-val">${Math.round(tv).toLocaleString('pt-BR')}<span class="sc-unit"> kg</span></div></div>
-  </div>`;
-  const content=td===0
-    ?'<div class="empty">Nenhuma série registrada ainda.<br>Complete séries no treino para ver aqui.</div>'
-    :sum+body;
+  const sum=`<div class="sum-grid"><div class="sum-card"><div class="sc-lbl">séries feitas</div><div class="sc-val">${td}<span class="sc-unit"> / ${ts||'—'}</span></div></div><div class="sum-card"><div class="sc-lbl">volume total</div><div class="sc-val">${Math.round(tv).toLocaleString('pt-BR')}<span class="sc-unit"> kg</span></div></div></div>`;
+  const content=td===0?'<div class="empty">Nenhuma série registrada ainda.<br>Complete séries no treino para ver aqui.</div>':sum+body;
   document.getElementById('main').innerHTML=`<div class="content-pad">${content}</div>`;
 }
-
 function renderTimer(){
   document.getElementById('tg').textContent='descanso entre séries';
   document.getElementById('tt').textContent='Timer';
@@ -328,29 +280,8 @@ function renderTimer(){
   const r=72,cx=85,cy=85,circ=2*Math.PI*r;
   const pct=tmax>0?Math.min(tsec/tmax,1):0;
   const da=circ*pct,dg=circ*(1-pct);
-  document.getElementById('main').innerHTML=`
-  <div class="content-pad"><div class="timer-center">
-    <div class="timer-ring">
-      <div class="timer-ring-wrap" style="position:relative;display:inline-block;width:170px;height:170px">
-        <svg viewBox="0 0 170 170" width="170" height="170">
-          <circle class="ring-bg" cx="${cx}" cy="${cy}" r="${r}"/>
-          <circle class="ring-fill" cx="${cx}" cy="${cy}" r="${r}"
-            stroke-dasharray="${da.toFixed(2)} ${dg.toFixed(2)}"
-            transform="rotate(-90 ${cx} ${cy})"/>  
-        </svg>
-        <div class="timer-num" id="tdisp">${fmt(tsec)}</div>
-      </div>
-    </div>
-    <div class="timer-btns">
-      <button class="tbtn" onclick="resetT()">Reset</button>
-      <button class="tbtn pri" onclick="togT()">${trun?'Pausar':'Iniciar'}</button>
-    </div>
-    <div class="presets">
-      ${[[60,'1 min'],[90,'1:30'],[120,'2 min'],[180,'3 min'],[240,'4 min']].map(([s,lbl])=>`<button class="pr${tsec===s&&!trun?' sel':''}" onclick="setP(${s})">${lbl}</button>`).join('')}
-    </div>
-  </div></div>`;
+  document.getElementById('main').innerHTML=`<div class="content-pad"><div class="timer-center"><div class="timer-ring"><div class="timer-ring-wrap" style="position:relative;display:inline-block;width:170px;height:170px"><svg viewBox="0 0 170 170" width="170" height="170"><circle class="ring-bg" cx="${cx}" cy="${cy}" r="${r}"/><circle class="ring-fill" cx="${cx}" cy="${cy}" r="${r}" stroke-dasharray="${da.toFixed(2)} ${dg.toFixed(2)}" transform="rotate(-90 ${cx} ${cy})"/>  </svg><div class="timer-num" id="tdisp">${fmt(tsec)}</div></div></div><div class="timer-btns"><button class="tbtn" onclick="resetT()">Reset</button><button class="tbtn pri" onclick="togT()">${trun?'Pausar':'Iniciar'}</button></div><div class="presets">${[[60,'1 min'],[90,'1:30'],[120,'2 min'],[180,'3 min'],[240,'4 min']].map(([s,lbl])=>`<button class="pr${tsec===s&&!trun?' sel':''}" onclick="setP(${s})">${lbl}</button>`).join('')}</div></div></div>`;
 }
-
 function selDay(i){cur=i;init();go(tab);}
 function tog(ei){const k=cur+'-'+ei;exp[k]=!exp[k];renderTreino();}
 function upd(ei,si,f,v){sdata[cur][ei][si][f]=v;}
@@ -370,7 +301,6 @@ function go(t){
   else if(t==='prog')renderProg();
   else renderTimer();
 }
-
 init();renderTreino();
 </script>
 </body>
